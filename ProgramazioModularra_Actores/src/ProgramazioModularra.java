@@ -141,6 +141,7 @@ public class ProgramazioModularra {
             System.out.println("3. Jaiotze-urteen batez-bestekoa kalkulatu");
             System.out.println("4. Jaiotze-urte handiena duen aktorea erakutsi");
             System.out.println("5. Jaiotze-data zaharrena duen aktorea erakutsi");
+            System.out.println("6. Izen luzeena duen aktorea erakutsi");
             System.out.println("0. Irten");
             System.out.print("Aukeratu aukera bat: ");
 
@@ -178,6 +179,10 @@ public class ProgramazioModularra {
 
                 case 5:
                     jaiotzeDataZaharrena();
+                    break;
+
+                case 6:
+                    izenLuzeena();
                     break;
 
                 case 0:
@@ -346,6 +351,44 @@ public class ProgramazioModularra {
         System.out.println("Heriotza-data: " + fechaMuerte[posizioa]);
         System.out.println("Heriotza-lekua: " + lugarMuerte[posizioa]);
         System.out.println("Jaiotze-urtea: " + anioNacimiento[posizioa]);
+
+    }
+
+
+    // Izen luzeena duten aktoreak bilatzen ditu
+    static void izenLuzeena() {
+
+        int luzeraHandiena = nombre[0].length();
+
+        // Izenen luzera handiena bilatzen du
+        for (int i = 1; i < nombre.length; i++) {
+
+            if (nombre[i].length() > luzeraHandiena) {
+                luzeraHandiena = nombre[i].length();
+            }
+
+        }
+
+        System.out.println("Izen luzeenaren karaktere kopurua: " + luzeraHandiena);
+
+        // Luzera handiena duten aktore guztiak erakusten ditu
+        for (int i = 0; i < nombre.length; i++) {
+
+            if (nombre[i].length() == luzeraHandiena) {
+
+                System.out.println("------------------------------");
+                System.out.println("Kodea: " + codigo[i]);
+                System.out.println("Izena: " + nombre[i]);
+                System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
+                System.out.println("Jaioterria: " + lugarNacimiento[i]);
+                System.out.println("Nazionalitatea: " + nacionalidad[i]);
+                System.out.println("Heriotza-data: " + fechaMuerte[i]);
+                System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
+                System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
+
+            }
+
+        }
 
     }
 
