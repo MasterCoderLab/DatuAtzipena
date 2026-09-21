@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class ProgramazioModularra {
 
@@ -114,11 +115,59 @@ public class ProgramazioModularra {
             1915
     };
 
+    // Teklatutik datuak irakurtzeko Scanner objektua
+    static Scanner sc = new Scanner(System.in);
+
 
     public static void main(String[] args) {
 
-        // Aktore guztiak erakusten dituen metodoari deitzen dio
-        aktoreakZerrendatu();
+        // Programaren menu nagusiari deitzen dio
+        menu();
+
+    }
+
+
+    // Programaren menu nagusia kudeatzen du
+    static void menu() {
+
+        int aukera;
+
+        do {
+
+            System.out.println();
+            System.out.println("===== AKTOREEN MENUA =====");
+            System.out.println("1. Aktore guztiak zerrendatu");
+            System.out.println("0. Irten");
+            System.out.print("Aukeratu aukera bat: ");
+
+            // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
+            while (!sc.hasNextInt()) {
+                System.out.println("Errorea: zenbaki bat sartu behar duzu.");
+                sc.nextLine();
+                System.out.print("Aukeratu aukera bat: ");
+            }
+
+            aukera = sc.nextInt();
+
+            // Scanner-aren bufferra garbitzen du
+            sc.nextLine();
+
+            switch (aukera) {
+
+                case 1:
+                    aktoreakZerrendatu();
+                    break;
+
+                case 0:
+                    System.out.println("Programa amaitu da.");
+                    break;
+
+                default:
+                    System.out.println("Aukera ez da zuzena.");
+                    break;
+            }
+
+        } while (aukera != 0);
     }
 
 
@@ -128,7 +177,6 @@ public class ProgramazioModularra {
         for (int i = 0; i < codigo.length; i++) {
 
             System.out.println("------------------------------");
-
             System.out.println("Kodea: " + codigo[i]);
             System.out.println("Izena: " + nombre[i]);
             System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
@@ -137,6 +185,7 @@ public class ProgramazioModularra {
             System.out.println("Heriotza-data: " + fechaMuerte[i]);
             System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
             System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
+
         }
     }
 }
