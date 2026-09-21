@@ -124,6 +124,9 @@ public class ProgramazioModularra {
         // Programaren menu nagusiari deitzen dio
         menu();
 
+        // Scanner objektua ixten du programa amaitzean
+        sc.close();
+
     }
 
 
@@ -143,21 +146,8 @@ public class ProgramazioModularra {
             System.out.println("5. Jaiotze-data zaharrena duen aktorea erakutsi");
             System.out.println("6. Izen luzeena duen aktorea erakutsi");
             System.out.println("0. Irten");
-            System.out.print("Aukeratu aukera bat: ");
 
-            // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
-            while (!sc.hasNextInt()) {
-
-                System.out.println("Errorea: zenbaki bat sartu behar duzu.");
-                sc.nextLine();
-                System.out.print("Aukeratu aukera bat: ");
-
-            }
-
-            aukera = sc.nextInt();
-
-            // Scanner-aren bufferra garbitzen du
-            sc.nextLine();
+            aukera = zenbakiOsoaIrakurri("Aukeratu aukera bat: ");
 
             switch (aukera) {
 
@@ -199,21 +189,71 @@ public class ProgramazioModularra {
     }
 
 
+    // Teklatutik zenbaki oso bat modu seguruan irakurtzen du
+    static int zenbakiOsoaIrakurri(String mezua) {
+
+        System.out.print(mezua);
+
+        // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
+        while (!sc.hasNextInt()) {
+
+            System.out.println("Errorea: zenbaki bat sartu behar duzu.");
+
+            // Scanner-aren bufferra garbitzen du
+            sc.nextLine();
+
+            System.out.print(mezua);
+
+        }
+
+        int zenbakia = sc.nextInt();
+
+        // Scanner-aren bufferra garbitzen du
+        sc.nextLine();
+
+        return zenbakia;
+
+    }
+
+
+    // Aktore baten datu guztiak pantailan erakusten ditu
+    static void aktoreaErakutsi(int i) {
+
+        System.out.println("------------------------------");
+        System.out.println("Kodea: " + codigo[i]);
+        System.out.println("Izena: " + nombre[i]);
+        System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
+
+        if (lugarNacimiento[i].isEmpty()) {
+            System.out.println("Jaioterria: -");
+        } else {
+            System.out.println("Jaioterria: " + lugarNacimiento[i]);
+        }
+
+        System.out.println("Nazionalitatea: " + nacionalidad[i]);
+
+        if (fechaMuerte[i] == null) {
+            System.out.println("Heriotza-data: -");
+        } else {
+            System.out.println("Heriotza-data: " + fechaMuerte[i]);
+        }
+
+        if (lugarMuerte[i].isEmpty()) {
+            System.out.println("Heriotza-lekua: -");
+        } else {
+            System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
+        }
+
+        System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
+
+    }
+
+
     // Aktore guztien datuak pantailan erakusten ditu
     static void aktoreakZerrendatu() {
 
         for (int i = 0; i < codigo.length; i++) {
-
-            System.out.println("------------------------------");
-            System.out.println("Kodea: " + codigo[i]);
-            System.out.println("Izena: " + nombre[i]);
-            System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
-            System.out.println("Jaioterria: " + lugarNacimiento[i]);
-            System.out.println("Nazionalitatea: " + nacionalidad[i]);
-            System.out.println("Heriotza-data: " + fechaMuerte[i]);
-            System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
-            System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
-
+            aktoreaErakutsi(i);
         }
 
     }
@@ -222,38 +262,16 @@ public class ProgramazioModularra {
     // Aktore bat kodearen bidez bilatzen du
     static void aktoreaKodezBilatu() {
 
-        int bilatutakoKodea;
+        int bilatutakoKodea =
+                zenbakiOsoaIrakurri("Sartu aktorearen kodea: ");
+
         boolean aurkituta = false;
-
-        System.out.print("Sartu aktorearen kodea: ");
-
-        // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
-        while (!sc.hasNextInt()) {
-
-            System.out.println("Errorea: zenbaki bat sartu behar duzu.");
-            sc.nextLine();
-            System.out.print("Sartu aktorearen kodea: ");
-
-        }
-
-        bilatutakoKodea = sc.nextInt();
-
-        // Scanner-aren bufferra garbitzen du
-        sc.nextLine();
 
         for (int i = 0; i < codigo.length; i++) {
 
             if (codigo[i] == bilatutakoKodea) {
 
-                System.out.println("------------------------------");
-                System.out.println("Kodea: " + codigo[i]);
-                System.out.println("Izena: " + nombre[i]);
-                System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
-                System.out.println("Jaioterria: " + lugarNacimiento[i]);
-                System.out.println("Nazionalitatea: " + nacionalidad[i]);
-                System.out.println("Heriotza-data: " + fechaMuerte[i]);
-                System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
-                System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
+                aktoreaErakutsi(i);
 
                 aurkituta = true;
                 break;
@@ -263,7 +281,8 @@ public class ProgramazioModularra {
         }
 
         if (!aurkituta) {
-            System.out.println("Ez da kode hori duen aktorerik aurkitu.");
+            System.out.println(
+                    "Ez da kode hori duen aktorerik aurkitu.");
         }
 
     }
@@ -280,14 +299,17 @@ public class ProgramazioModularra {
         }
 
         // Batura aktore kopuruarekin zatitzen du
-        double batezBestekoa = (double) batura / anioNacimiento.length;
+        double batezBestekoa =
+                (double) batura / anioNacimiento.length;
 
-        System.out.println("Jaiotze-urteen batez-bestekoa: " + batezBestekoa);
+        System.out.println(
+                "Jaiotze-urteen batez-bestekoa: "
+                        + batezBestekoa);
 
     }
 
 
-    // Jaiotze-urte handiena bilatzen du
+    // Jaiotze-urte handiena duten aktoreak bilatzen ditu
     static void jaiotzeUrteHandiena() {
 
         int handiena = anioNacimiento[0];
@@ -301,23 +323,14 @@ public class ProgramazioModularra {
 
         }
 
-        System.out.println("Jaiotze-urte handiena: " + handiena);
+        System.out.println(
+                "Jaiotze-urte handiena: " + handiena);
 
         // Urte handiena duten aktore guztiak erakusten ditu
         for (int i = 0; i < anioNacimiento.length; i++) {
 
             if (anioNacimiento[i] == handiena) {
-
-                System.out.println("------------------------------");
-                System.out.println("Kodea: " + codigo[i]);
-                System.out.println("Izena: " + nombre[i]);
-                System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
-                System.out.println("Jaioterria: " + lugarNacimiento[i]);
-                System.out.println("Nazionalitatea: " + nacionalidad[i]);
-                System.out.println("Heriotza-data: " + fechaMuerte[i]);
-                System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
-                System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
-
+                aktoreaErakutsi(i);
             }
 
         }
@@ -335,22 +348,18 @@ public class ProgramazioModularra {
         for (int i = 1; i < fechaNacimiento.length; i++) {
 
             if (fechaNacimiento[i].isBefore(dataZaharrena)) {
+
                 dataZaharrena = fechaNacimiento[i];
                 posizioa = i;
+
             }
 
         }
 
-        System.out.println("Jaiotze-data zaharrena: " + dataZaharrena);
-        System.out.println("------------------------------");
-        System.out.println("Kodea: " + codigo[posizioa]);
-        System.out.println("Izena: " + nombre[posizioa]);
-        System.out.println("Jaiotze-data: " + fechaNacimiento[posizioa]);
-        System.out.println("Jaioterria: " + lugarNacimiento[posizioa]);
-        System.out.println("Nazionalitatea: " + nacionalidad[posizioa]);
-        System.out.println("Heriotza-data: " + fechaMuerte[posizioa]);
-        System.out.println("Heriotza-lekua: " + lugarMuerte[posizioa]);
-        System.out.println("Jaiotze-urtea: " + anioNacimiento[posizioa]);
+        System.out.println(
+                "Jaiotze-data zaharrena: " + dataZaharrena);
+
+        aktoreaErakutsi(posizioa);
 
     }
 
@@ -369,23 +378,15 @@ public class ProgramazioModularra {
 
         }
 
-        System.out.println("Izen luzeenaren karaktere kopurua: " + luzeraHandiena);
+        System.out.println(
+                "Izen luzeenaren karaktere kopurua: "
+                        + luzeraHandiena);
 
         // Luzera handiena duten aktore guztiak erakusten ditu
         for (int i = 0; i < nombre.length; i++) {
 
             if (nombre[i].length() == luzeraHandiena) {
-
-                System.out.println("------------------------------");
-                System.out.println("Kodea: " + codigo[i]);
-                System.out.println("Izena: " + nombre[i]);
-                System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
-                System.out.println("Jaioterria: " + lugarNacimiento[i]);
-                System.out.println("Nazionalitatea: " + nacionalidad[i]);
-                System.out.println("Heriotza-data: " + fechaMuerte[i]);
-                System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
-                System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
-
+                aktoreaErakutsi(i);
             }
 
         }
