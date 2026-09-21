@@ -140,6 +140,7 @@ public class ProgramazioModularra {
             System.out.println("2. Aktore bat kodearen bidez bilatu");
             System.out.println("3. Jaiotze-urteen batez-bestekoa kalkulatu");
             System.out.println("4. Jaiotze-urte handiena duen aktorea erakutsi");
+            System.out.println("5. Jaiotze-data zaharrena duen aktorea erakutsi");
             System.out.println("0. Irten");
             System.out.print("Aukeratu aukera bat: ");
 
@@ -173,6 +174,10 @@ public class ProgramazioModularra {
 
                 case 4:
                     jaiotzeUrteHandiena();
+                    break;
+
+                case 5:
+                    jaiotzeDataZaharrena();
                     break;
 
                 case 0:
@@ -311,6 +316,36 @@ public class ProgramazioModularra {
             }
 
         }
+
+    }
+
+
+    // Jaiotze-data zaharrena duen aktorea bilatzen du
+    static void jaiotzeDataZaharrena() {
+
+        LocalDate dataZaharrena = fechaNacimiento[0];
+        int posizioa = 0;
+
+        // Jaiotze-data guztiak alderatzen ditu
+        for (int i = 1; i < fechaNacimiento.length; i++) {
+
+            if (fechaNacimiento[i].isBefore(dataZaharrena)) {
+                dataZaharrena = fechaNacimiento[i];
+                posizioa = i;
+            }
+
+        }
+
+        System.out.println("Jaiotze-data zaharrena: " + dataZaharrena);
+        System.out.println("------------------------------");
+        System.out.println("Kodea: " + codigo[posizioa]);
+        System.out.println("Izena: " + nombre[posizioa]);
+        System.out.println("Jaiotze-data: " + fechaNacimiento[posizioa]);
+        System.out.println("Jaioterria: " + lugarNacimiento[posizioa]);
+        System.out.println("Nazionalitatea: " + nacionalidad[posizioa]);
+        System.out.println("Heriotza-data: " + fechaMuerte[posizioa]);
+        System.out.println("Heriotza-lekua: " + lugarMuerte[posizioa]);
+        System.out.println("Jaiotze-urtea: " + anioNacimiento[posizioa]);
 
     }
 
