@@ -138,14 +138,17 @@ public class ProgramazioModularra {
             System.out.println("===== AKTOREEN MENUA =====");
             System.out.println("1. Aktore guztiak zerrendatu");
             System.out.println("2. Aktore bat kodearen bidez bilatu");
+            System.out.println("3. Jaiotze-urteen batez-bestekoa kalkulatu");
             System.out.println("0. Irten");
             System.out.print("Aukeratu aukera bat: ");
 
             // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
             while (!sc.hasNextInt()) {
+
                 System.out.println("Errorea: zenbaki bat sartu behar duzu.");
                 sc.nextLine();
                 System.out.print("Aukeratu aukera bat: ");
+
             }
 
             aukera = sc.nextInt();
@@ -161,6 +164,10 @@ public class ProgramazioModularra {
 
                 case 2:
                     aktoreaKodezBilatu();
+                    break;
+
+                case 3:
+                    jaiotzeUrteenBatezBestekoa();
                     break;
 
                 case 0:
@@ -207,9 +214,11 @@ public class ProgramazioModularra {
 
         // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
         while (!sc.hasNextInt()) {
+
             System.out.println("Errorea: zenbaki bat sartu behar duzu.");
             sc.nextLine();
             System.out.print("Sartu aktorearen kodea: ");
+
         }
 
         bilatutakoKodea = sc.nextInt();
@@ -233,6 +242,7 @@ public class ProgramazioModularra {
 
                 aurkituta = true;
                 break;
+
             }
 
         }
@@ -240,6 +250,24 @@ public class ProgramazioModularra {
         if (!aurkituta) {
             System.out.println("Ez da kode hori duen aktorerik aurkitu.");
         }
+
+    }
+
+
+    // Aktoreen jaiotze-urteen batez-bestekoa kalkulatzen du
+    static void jaiotzeUrteenBatezBestekoa() {
+
+        int batura = 0;
+
+        // Jaiotze-urte guztiak batzen ditu
+        for (int i = 0; i < anioNacimiento.length; i++) {
+            batura = batura + anioNacimiento[i];
+        }
+
+        // Batura aktore kopuruarekin zatitzen du
+        double batezBestekoa = (double) batura / anioNacimiento.length;
+
+        System.out.println("Jaiotze-urteen batez-bestekoa: " + batezBestekoa);
 
     }
 
