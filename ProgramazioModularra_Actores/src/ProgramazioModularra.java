@@ -1,6 +1,11 @@
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * Aktoreen datuak kudeatzeko programa.
+ * Programak aktoreak zerrendatu, kodearen bidez bilatu
+ * eta hainbat kalkulu egiteko aukera ematen du.
+ */
 public class ProgramazioModularra {
 
     // Aktoreen datuak gordetzeko taulak
@@ -118,7 +123,11 @@ public class ProgramazioModularra {
     // Teklatutik datuak irakurtzeko Scanner objektua
     static Scanner sc = new Scanner(System.in);
 
-
+    /**
+     * Programaren abiapuntua.
+     *
+     * @param args komando-lerroko argumentuak
+     */
     public static void main(String[] args) {
 
         // Programaren menu nagusiari deitzen dio
@@ -126,11 +135,12 @@ public class ProgramazioModularra {
 
         // Scanner objektua ixten du programa amaitzean
         sc.close();
-
     }
 
-
-    // Programaren menu nagusia kudeatzen du
+    /**
+     * Programaren menu nagusia erakutsi eta erabiltzailearen
+     * aukerak kudeatzen ditu.
+     */
     static void menu() {
 
         int aukera;
@@ -185,11 +195,14 @@ public class ProgramazioModularra {
             }
 
         } while (aukera != 0);
-
     }
 
-
-    // Teklatutik zenbaki oso bat modu seguruan irakurtzen du
+    /**
+     * Teklatutik zenbaki oso bat modu seguruan irakurtzen du.
+     *
+     * @param mezua erabiltzaileari erakutsiko zaion mezua
+     * @return erabiltzaileak sartutako zenbaki osoa
+     */
     static int zenbakiOsoaIrakurri(String mezua) {
 
         System.out.print(mezua);
@@ -203,7 +216,6 @@ public class ProgramazioModularra {
             sc.nextLine();
 
             System.out.print(mezua);
-
         }
 
         int zenbakia = sc.nextInt();
@@ -212,11 +224,14 @@ public class ProgramazioModularra {
         sc.nextLine();
 
         return zenbakia;
-
     }
 
-
-    // Aktore baten datu guztiak pantailan erakusten ditu
+    /**
+     * Adierazitako posizioan dagoen aktorearen datu guztiak
+     * pantailan erakusten ditu.
+     *
+     * @param i aktorearen posizioa tauletan
+     */
     static void aktoreaErakutsi(int i) {
 
         System.out.println("------------------------------");
@@ -245,21 +260,22 @@ public class ProgramazioModularra {
         }
 
         System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
-
     }
 
-
-    // Aktore guztien datuak pantailan erakusten ditu
+    /**
+     * Aktore guztien datuak pantailan erakusten ditu.
+     */
     static void aktoreakZerrendatu() {
 
         for (int i = 0; i < codigo.length; i++) {
             aktoreaErakutsi(i);
         }
-
     }
 
-
-    // Aktore bat kodearen bidez bilatzen du
+    /**
+     * Erabiltzaileak adierazitako kodea duen aktorea bilatu
+     * eta haren datuak erakusten ditu.
+     */
     static void aktoreaKodezBilatu() {
 
         int bilatutakoKodea =
@@ -275,20 +291,19 @@ public class ProgramazioModularra {
 
                 aurkituta = true;
                 break;
-
             }
-
         }
 
         if (!aurkituta) {
             System.out.println(
                     "Ez da kode hori duen aktorerik aurkitu.");
         }
-
     }
 
-
-    // Aktoreen jaiotze-urteen batez-bestekoa kalkulatzen du
+    /**
+     * Aktoreen jaiotze-urteen batez-bestekoa kalkulatu
+     * eta pantailan erakusten du.
+     */
     static void jaiotzeUrteenBatezBestekoa() {
 
         int batura = 0;
@@ -305,11 +320,12 @@ public class ProgramazioModularra {
         System.out.println(
                 "Jaiotze-urteen batez-bestekoa: "
                         + batezBestekoa);
-
     }
 
-
-    // Jaiotze-urte handiena duten aktoreak bilatzen ditu
+    /**
+     * Jaiotze-urte handiena bilatu eta urte hori duten
+     * aktore guztiak erakusten ditu.
+     */
     static void jaiotzeUrteHandiena() {
 
         int handiena = anioNacimiento[0];
@@ -320,7 +336,6 @@ public class ProgramazioModularra {
             if (anioNacimiento[i] > handiena) {
                 handiena = anioNacimiento[i];
             }
-
         }
 
         System.out.println(
@@ -332,13 +347,13 @@ public class ProgramazioModularra {
             if (anioNacimiento[i] == handiena) {
                 aktoreaErakutsi(i);
             }
-
         }
-
     }
 
-
-    // Jaiotze-data zaharrena duen aktorea bilatzen du
+    /**
+     * Jaiotze-data zaharrena bilatu eta data hori duen
+     * aktorea erakusten du.
+     */
     static void jaiotzeDataZaharrena() {
 
         LocalDate dataZaharrena = fechaNacimiento[0];
@@ -351,20 +366,19 @@ public class ProgramazioModularra {
 
                 dataZaharrena = fechaNacimiento[i];
                 posizioa = i;
-
             }
-
         }
 
         System.out.println(
                 "Jaiotze-data zaharrena: " + dataZaharrena);
 
         aktoreaErakutsi(posizioa);
-
     }
 
-
-    // Izen luzeena duten aktoreak bilatzen ditu
+    /**
+     * Karaktere gehien dituen izena bilatu eta luzera hori
+     * duten aktore guztiak erakusten ditu.
+     */
     static void izenLuzeena() {
 
         int luzeraHandiena = nombre[0].length();
@@ -375,7 +389,6 @@ public class ProgramazioModularra {
             if (nombre[i].length() > luzeraHandiena) {
                 luzeraHandiena = nombre[i].length();
             }
-
         }
 
         System.out.println(
@@ -388,9 +401,6 @@ public class ProgramazioModularra {
             if (nombre[i].length() == luzeraHandiena) {
                 aktoreaErakutsi(i);
             }
-
         }
-
     }
-
 }
