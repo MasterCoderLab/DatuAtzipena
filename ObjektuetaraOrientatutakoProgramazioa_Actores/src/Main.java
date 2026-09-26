@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -52,7 +53,7 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Oraindik ez dago eginda.");
+                    aktoreakDatenArteanZerrendatu(actores);
                     break;
 
                 case 4:
@@ -101,6 +102,27 @@ public class Main {
         sc.nextLine();
 
         return zenbakia;
+    }
+
+    // Teklatutik data bat modu seguruan irakurtzen du
+    static LocalDate dataIrakurri(String mezua) {
+
+        while (true) {
+
+            System.out.print(mezua);
+
+            String testua = sc.nextLine();
+
+            try {
+
+                return LocalDate.parse(testua);
+
+            } catch (DateTimeParseException e) {
+
+                System.out.println(
+                        "Errorea: data YYYY-MM-DD formatuan sartu behar duzu.");
+            }
+        }
     }
 
     // Hasierako aktoreen datuak ArrayList-ean kargatzen ditu
@@ -228,10 +250,9 @@ public class Main {
         ));
     }
 
-    // Aktore guztiak taula batean erakusten ditu
-    static void aktoreakZerrendatu(ArrayList<Actor> actores) {
+    // Taularen goiburua erakusten du
+    static void taulaGoiburuaErakutsi() {
 
-        // Taularen goiburua erakusten du
         System.out.printf(
                 "%-6s %-20s %-12s %-28s %-18s %-14s %-20s %-7s%n",
                 "Kodea",
@@ -245,54 +266,63 @@ public class Main {
         );
 
         System.out.println("-".repeat(135));
+    }
 
-        // ArrayList-eko aktore guztiak banan-banan zeharkatzen ditu
+    // Aktore baten datuak taulako lerro batean erakusten ditu
+    static void aktoreaLerroanErakutsi(Actor actor) {
+
+        String jaioterria;
+
+        if (actor.getLugarNacimiento().isEmpty()) {
+            jaioterria = "-";
+        } else {
+            jaioterria = actor.getLugarNacimiento();
+        }
+
+        String heriotzaData;
+
+        if (actor.getFechaMuerte() == null) {
+            heriotzaData = "-";
+        } else {
+            heriotzaData = actor.getFechaMuerte().toString();
+        }
+
+        String heriotzaLekua;
+
+        if (actor.getLugarMuerte().isEmpty()) {
+            heriotzaLekua = "-";
+        } else {
+            heriotzaLekua = actor.getLugarMuerte();
+        }
+
+        String bizirik;
+
+        if (actor.isVivo()) {
+            bizirik = "Bai";
+        } else {
+            bizirik = "Ez";
+        }
+
+        System.out.printf(
+                "%-6d %-20s %-12s %-28s %-18s %-14s %-20s %-7s%n",
+                actor.getCodigo(),
+                actor.getNombre(),
+                actor.getFechaNacimiento(),
+                jaioterria,
+                actor.getNacionalidad(),
+                heriotzaData,
+                heriotzaLekua,
+                bizirik
+        );
+    }
+
+    // Aktore guztiak taula batean erakusten ditu
+    static void aktoreakZerrendatu(ArrayList<Actor> actores) {
+
+        taulaGoiburuaErakutsi();
+
         for (Actor actor : actores) {
-
-            String jaioterria;
-
-            if (actor.getLugarNacimiento().isEmpty()) {
-                jaioterria = "-";
-            } else {
-                jaioterria = actor.getLugarNacimiento();
-            }
-
-            String heriotzaData;
-
-            if (actor.getFechaMuerte() == null) {
-                heriotzaData = "-";
-            } else {
-                heriotzaData = actor.getFechaMuerte().toString();
-            }
-
-            String heriotzaLekua;
-
-            if (actor.getLugarMuerte().isEmpty()) {
-                heriotzaLekua = "-";
-            } else {
-                heriotzaLekua = actor.getLugarMuerte();
-            }
-
-            String bizirik;
-
-            if (actor.isVivo()) {
-                bizirik = "Bai";
-            } else {
-                bizirik = "Ez";
-            }
-
-            // Aktorearen datuak taulan erakusten ditu
-            System.out.printf(
-                    "%-6d %-20s %-12s %-28s %-18s %-14s %-20s %-7s%n",
-                    actor.getCodigo(),
-                    actor.getNombre(),
-                    actor.getFechaNacimiento(),
-                    jaioterria,
-                    actor.getNacionalidad(),
-                    heriotzaData,
-                    heriotzaLekua,
-                    bizirik
-            );
+            aktoreaLerroanErakutsi(actor);
         }
     }
 
@@ -304,7 +334,6 @@ public class Main {
 
         boolean aurkituta = false;
 
-        // ArrayList-eko aktore guztiak banan-banan aztertzen ditu
         for (Actor actor : actores) {
 
             if (actor.getCodigo() == bilatutakoKodea) {
@@ -317,10 +346,59 @@ public class Main {
             }
         }
 
-        // Kodea aurkitu ez bada, errore-mezua erakusten du
         if (!aurkituta) {
+
             System.out.println(
                     "Ez da kode hori duen aktorerik aurkitu.");
+        }
+    }
+
+    // Bi daten artean jaiotako aktoreak zerrendatzen ditu
+    static void aktoreakDatenArteanZerrendatu(
+            ArrayList<Actor> actores) {
+
+        LocalDate hasierakoData =
+                dataIrakurri("Sartu hasierako data (YYYY-MM-DD): ");
+
+        LocalDate amaierakoData =
+                dataIrakurri("Sartu amaierako data (YYYY-MM-DD): ");
+
+        // Hasierako data amaierakoa baino geroagokoa den egiaztatzen du
+        if (hasierakoData.isAfter(amaierakoData)) {
+
+            System.out.println(
+                    "Errorea: hasierako data ezin da amaierako data baino geroagokoa izan.");
+
+            return;
+        }
+
+        boolean aurkituta = false;
+
+        System.out.println();
+        taulaGoiburuaErakutsi();
+
+        for (Actor actor : actores) {
+
+            LocalDate jaiotzeData =
+                    actor.getFechaNacimiento();
+
+            // Hasierako eta amaierako datak barne hartzen ditu
+            if ((jaiotzeData.isEqual(hasierakoData)
+                    || jaiotzeData.isAfter(hasierakoData))
+                    &&
+                    (jaiotzeData.isEqual(amaierakoData)
+                    || jaiotzeData.isBefore(amaierakoData))) {
+
+                aktoreaLerroanErakutsi(actor);
+
+                aurkituta = true;
+            }
+        }
+
+        if (!aurkituta) {
+
+            System.out.println(
+                    "Ez dago data horien artean jaiotako aktorerik.");
         }
     }
 }
