@@ -56,6 +56,7 @@ public class Main {
             System.out.println("4. Aktore berri bat gehitu");
             System.out.println("5. Aktore bat ezabatu");
             System.out.println("6. Aktoreak izenaren arabera ordenatu");
+            System.out.println("7. Aktore bat editatu");
             System.out.println("0. Irten");
 
             aukera =
@@ -97,6 +98,12 @@ public class Main {
                 case 6:
                     ActorKudeaketa.aktoreakOrdenatu(
                             actores);
+                    break;
+
+                case 7:
+                    ActorKudeaketa.aktoreaEditatu(
+                            actores,
+                            sc);
                     break;
 
                 case 0:
