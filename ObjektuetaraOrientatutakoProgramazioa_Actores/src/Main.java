@@ -1,7 +1,11 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+
+    // Teklatutik datuak irakurtzeko Scanner objektua
+    static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
 
@@ -11,8 +15,91 @@ public class Main {
         // Hasierako aktoreak ArrayList-ean kargatzen ditu
         aktoreakKargatu(actores);
 
-        // Aktore guztiak pantailan erakusten ditu
-        aktoreakZerrendatu(actores);
+        // Menu nagusia abiarazten du
+        menu(actores);
+
+        // Scanner objektua ixten du
+        sc.close();
+    }
+
+    // Programaren menu nagusia erakusten du
+    static void menu(ArrayList<Actor> actores) {
+
+        int aukera;
+
+        do {
+
+            System.out.println();
+            System.out.println("===== AKTOREEN MENUA =====");
+            System.out.println("1. Aktore guztiak zerrendatu");
+            System.out.println("2. Aktore bat kodearen bidez bilatu");
+            System.out.println("3. Bi daten arteko aktoreak zerrendatu");
+            System.out.println("4. Aktore berri bat gehitu");
+            System.out.println("5. Aktore bat ezabatu");
+            System.out.println("6. Aktoreak ordenatu");
+            System.out.println("0. Irten");
+
+            aukera = zenbakiOsoaIrakurri("Aukeratu aukera bat: ");
+
+            switch (aukera) {
+
+                case 1:
+                    aktoreakZerrendatu(actores);
+                    break;
+
+                case 2:
+                    System.out.println("Oraindik ez dago eginda.");
+                    break;
+
+                case 3:
+                    System.out.println("Oraindik ez dago eginda.");
+                    break;
+
+                case 4:
+                    System.out.println("Oraindik ez dago eginda.");
+                    break;
+
+                case 5:
+                    System.out.println("Oraindik ez dago eginda.");
+                    break;
+
+                case 6:
+                    System.out.println("Oraindik ez dago eginda.");
+                    break;
+
+                case 0:
+                    System.out.println("Programa amaitu da.");
+                    break;
+
+                default:
+                    System.out.println("Aukera ez da zuzena.");
+                    break;
+            }
+
+        } while (aukera != 0);
+    }
+
+    // Teklatutik zenbaki oso bat modu seguruan irakurtzen du
+    static int zenbakiOsoaIrakurri(String mezua) {
+
+        System.out.print(mezua);
+
+        while (!sc.hasNextInt()) {
+
+            System.out.println("Errorea: zenbaki oso bat sartu behar duzu.");
+
+            // Scanner-aren bufferra garbitzen du
+            sc.nextLine();
+
+            System.out.print(mezua);
+        }
+
+        int zenbakia = sc.nextInt();
+
+        // Scanner-aren bufferra garbitzen du
+        sc.nextLine();
+
+        return zenbakia;
     }
 
     // Hasierako aktoreen datuak ArrayList-ean kargatzen ditu
