@@ -48,7 +48,7 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Oraindik ez dago eginda.");
+                    aktoreaKodezBilatu(actores);
                     break;
 
                 case 3:
@@ -86,7 +86,8 @@ public class Main {
 
         while (!sc.hasNextInt()) {
 
-            System.out.println("Errorea: zenbaki oso bat sartu behar duzu.");
+            System.out.println(
+                    "Errorea: zenbaki oso bat sartu behar duzu.");
 
             // Scanner-aren bufferra garbitzen du
             sc.nextLine();
@@ -292,6 +293,34 @@ public class Main {
                     heriotzaLekua,
                     bizirik
             );
+        }
+    }
+
+    // Aktore bat kodearen bidez bilatzen du
+    static void aktoreaKodezBilatu(ArrayList<Actor> actores) {
+
+        int bilatutakoKodea =
+                zenbakiOsoaIrakurri("Sartu aktorearen kodea: ");
+
+        boolean aurkituta = false;
+
+        // ArrayList-eko aktore guztiak banan-banan aztertzen ditu
+        for (Actor actor : actores) {
+
+            if (actor.getCodigo() == bilatutakoKodea) {
+
+                System.out.println();
+                System.out.println(actor);
+
+                aurkituta = true;
+                break;
+            }
+        }
+
+        // Kodea aurkitu ez bada, errore-mezua erakusten du
+        if (!aurkituta) {
+            System.out.println(
+                    "Ez da kode hori duen aktorerik aurkitu.");
         }
     }
 }
