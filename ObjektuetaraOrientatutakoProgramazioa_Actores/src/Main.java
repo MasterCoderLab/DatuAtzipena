@@ -8,7 +8,8 @@ import java.util.Scanner;
  * kudeatzeko programa nagusia.
  *
  * Programak aktoreak zerrendatzeko, kodearen bidez bilatzeko,
- * bi daten artean bilatzeko eta aktore berriak gehitzeko aukera ematen du.
+ * bi daten artean bilatzeko, aktore berriak gehitzeko
+ * eta aktoreak ezabatzeko aukera ematen du.
  */
 public class Main {
 
@@ -81,7 +82,7 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println("Oraindik ez dago eginda.");
+                    aktoreaEzabatu(actores);
                     break;
 
                 case 6:
@@ -570,5 +571,62 @@ public class Main {
         System.out.println();
         System.out.println("Aktorea behar bezala gehitu da:");
         System.out.println(aktoreBerria);
+    }
+
+    /**
+     * Erabiltzaileak adierazitako kodea duen aktorea bilatu
+     * eta zerrendatik ezabatzen du.
+     *
+     * Ezabatu aurretik aktorearen informazioa toString metodoaren
+     * bidez erakusten du eta erabiltzaileari berrespena eskatzen dio.
+     *
+     * @param actores aktorea bilatu eta ezabatuko den zerrenda
+     */
+    static void aktoreaEzabatu(ArrayList<Actor> actores) {
+
+        int kodea =
+                zenbakiOsoaIrakurri(
+                        "Sartu ezabatu nahi duzun aktorearen kodea: ");
+
+        Actor ezabatzekoAktorea = null;
+
+        // Kodea duen aktorea bilatzen du
+        for (Actor actor : actores) {
+
+            if (actor.getCodigo() == kodea) {
+
+                ezabatzekoAktorea = actor;
+                break;
+            }
+        }
+
+        if (ezabatzekoAktorea == null) {
+
+            System.out.println(
+                    "Ez da kode hori duen aktorerik aurkitu.");
+
+            return;
+        }
+
+        System.out.println();
+        System.out.println("Ezabatu nahi duzun aktorea:");
+        System.out.println(ezabatzekoAktorea);
+
+        boolean baieztatu =
+                baiEzIrakurri(
+                        "Ziur zaude aktorea ezabatu nahi duzula? (B/E): ");
+
+        if (baieztatu) {
+
+            actores.remove(ezabatzekoAktorea);
+
+            System.out.println(
+                    "Aktorea behar bezala ezabatu da.");
+
+        } else {
+
+            System.out.println(
+                    "Ezabatzea bertan behera utzi da.");
+        }
     }
 }
