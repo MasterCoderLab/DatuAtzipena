@@ -11,11 +11,11 @@ public class Main {
         // Hasierako aktoreak ArrayList-ean kargatzen ditu
         aktoreakKargatu(actores);
 
-        // Lehen aktorea erakusteko behin-behineko proba
-        System.out.println(actores.get(0));
+        // Aktore guztiak pantailan erakusten ditu
+        aktoreakZerrendatu(actores);
     }
 
- // Hasierako aktoreen datuak ArrayList-ean kargatzen ditu
+    // Hasierako aktoreen datuak ArrayList-ean kargatzen ditu
     static void aktoreakKargatu(ArrayList<Actor> actores) {
 
         actores.add(new Actor(
@@ -138,5 +138,73 @@ public class Main {
                 "Londres",
                 false
         ));
+    }
+
+    // Aktore guztiak taula batean erakusten ditu
+    static void aktoreakZerrendatu(ArrayList<Actor> actores) {
+
+        // Taularen goiburua erakusten du
+        System.out.printf(
+                "%-6s %-20s %-12s %-28s %-18s %-14s %-20s %-7s%n",
+                "Kodea",
+                "Izena",
+                "Jaiotza",
+                "Jaioterria",
+                "Nazionalitatea",
+                "Heriotza",
+                "Heriotza lekua",
+                "Bizirik"
+        );
+
+        System.out.println("-".repeat(135));
+
+        // ArrayList-eko aktore guztiak banan-banan zeharkatzen ditu
+        for (Actor actor : actores) {
+
+            String jaioterria;
+
+            if (actor.getLugarNacimiento().isEmpty()) {
+                jaioterria = "-";
+            } else {
+                jaioterria = actor.getLugarNacimiento();
+            }
+
+            String heriotzaData;
+
+            if (actor.getFechaMuerte() == null) {
+                heriotzaData = "-";
+            } else {
+                heriotzaData = actor.getFechaMuerte().toString();
+            }
+
+            String heriotzaLekua;
+
+            if (actor.getLugarMuerte().isEmpty()) {
+                heriotzaLekua = "-";
+            } else {
+                heriotzaLekua = actor.getLugarMuerte();
+            }
+
+            String bizirik;
+
+            if (actor.isVivo()) {
+                bizirik = "Bai";
+            } else {
+                bizirik = "Ez";
+            }
+
+            // Aktorearen datuak taulan erakusten ditu
+            System.out.printf(
+                    "%-6d %-20s %-12s %-28s %-18s %-14s %-20s %-7s%n",
+                    actor.getCodigo(),
+                    actor.getNombre(),
+                    actor.getFechaNacimiento(),
+                    jaioterria,
+                    actor.getNacionalidad(),
+                    heriotzaData,
+                    heriotzaLekua,
+                    bizirik
+            );
+        }
     }
 }
