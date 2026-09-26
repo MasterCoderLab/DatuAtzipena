@@ -3,7 +3,6 @@ package kudeaketa;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Scanner;
 
 import eredua.Actor;
@@ -13,8 +12,8 @@ import eredua.Actor;
  * egiteko metodoak biltzen dituen klasea.
  *
  * Klase honek aktoreak zerrendatu, bilatu, gehitu,
- * ezabatu, daten arabera iragazi eta ordenatzeko
- * funtzionaltasuna eskaintzen du.
+ * ezabatu, editatu, daten arabera iragazi eta
+ * ordenatzeko funtzionaltasuna eskaintzen du.
  */
 public class ActorKudeaketa {
 
@@ -52,31 +51,38 @@ public class ActorKudeaketa {
 
     /**
      * Teklatutik data bat irakurtzen du YYYY-MM-DD formatuan.
+     * Formatu okerra sartuz gero, data berriro eskatzen du.
      *
      * @param sc teklatuko datuak irakurtzeko Scanner objektua
      * @param mezua erabiltzaileari erakutsiko zaion mezua
-     * @return erabiltzaileak sartutako data
+     * @return erabiltzaileak sartutako data zuzena
      */
     public static LocalDate dataIrakurri(
             Scanner sc,
             String mezua) {
 
-        while (true) {
+        LocalDate data = null;
+        boolean dataZuzena = false;
+
+        do {
 
             System.out.print(mezua);
-
             String testua = sc.nextLine();
 
             try {
 
-                return LocalDate.parse(testua);
+                data = LocalDate.parse(testua);
+                dataZuzena = true;
 
             } catch (DateTimeParseException e) {
 
                 System.out.println(
                         "Errorea: data YYYY-MM-DD formatuan sartu behar duzu.");
             }
-        }
+
+        } while (!dataZuzena);
+
+        return data;
     }
 
     /**
@@ -90,23 +96,33 @@ public class ActorKudeaketa {
             Scanner sc,
             String mezua) {
 
-        while (true) {
+        boolean erantzunZuzena = false;
+        boolean emaitza = false;
+
+        do {
 
             System.out.print(mezua);
-
             String erantzuna = sc.nextLine().trim();
 
             if (erantzuna.equalsIgnoreCase("B")) {
-                return true;
+
+                emaitza = true;
+                erantzunZuzena = true;
+
+            } else if (erantzuna.equalsIgnoreCase("E")) {
+
+                emaitza = false;
+                erantzunZuzena = true;
+
+            } else {
+
+                System.out.println(
+                        "Errorea: B (bai) edo E (ez) sartu behar duzu.");
             }
 
-            if (erantzuna.equalsIgnoreCase("E")) {
-                return false;
-            }
+        } while (!erantzunZuzena);
 
-            System.out.println(
-                    "Errorea: B (bai) edo E (ez) sartu behar duzu.");
-        }
+        return emaitza;
     }
 
     /**
@@ -372,6 +388,7 @@ public class ActorKudeaketa {
                 bizirik
         );
 
+        // Aktore berria ArrayList-aren amaieran gehitzen du
         actores.add(aktoreBerria);
 
         System.out.println();
@@ -427,6 +444,7 @@ public class ActorKudeaketa {
 
         if (baieztatu) {
 
+            // ArrayList-etik objektua ezabatzen du
             actores.remove(ezabatzekoAktorea);
 
             System.out.println(
@@ -440,26 +458,283 @@ public class ActorKudeaketa {
     }
 
     /**
-     * Aktoreen zerrenda izenaren arabera ordenatzen du
-     * eta emaitza taula formatuan erakusten du.
+     * Aktoreen zerrenda izenaren arabera alfabetikoki ordenatzen du.
+     *
+     * Ordenazioa Bubble Sort algoritmoaren bidez egiten da,
+     * ArrayList-eko size(), get() eta set() metodoak erabiliz.
      *
      * @param actores ordenatuko den aktoreen zerrenda
      */
     public static void aktoreakOrdenatu(
             ArrayList<Actor> actores) {
 
-        // ArrayList bera ordenatzen du
-        actores.sort(
-                Comparator.comparing(
-                        Actor::getNombre,
-                        String.CASE_INSENSITIVE_ORDER
-                )
-        );
+        // Bubble Sort algoritmoa
+        for (int i = 0; i < actores.size() - 1; i++) {
+
+            for (int j = 0;
+                    j < actores.size() - 1 - i;
+                    j++) {
+
+                Actor lehenengoa = actores.get(j);
+                Actor hurrengoa = actores.get(j + 1);
+
+                // Bi aktoreen izenak alfabetikoki konparatzen ditu
+                if (lehenengoa.getNombre()
+                        .compareToIgnoreCase(
+                                hurrengoa.getNombre()) > 0) {
+
+                    // Bi aktoreen posizioak trukatzen ditu
+                    actores.set(j, hurrengoa);
+                    actores.set(j + 1, lehenengoa);
+                }
+            }
+        }
 
         System.out.println();
         System.out.println(
                 "Aktoreak izenaren arabera ordenatu dira:");
 
         aktoreakZerrendatu(actores);
+    }
+
+    /**
+     * Kode baten bidez aktore bat bilatzen du eta haren
+     * datuak editatzeko aukera ematen du.
+     *
+     * Aldaketak Actor klaseko setter metodoen bidez egiten dira.
+     * Aktorearen kodea aldatzean, kode berria errepikatuta
+     * ez dagoela egiaztatzen da.
+     *
+     * @param actores aktorea bilatzeko eta aldatzeko erabiliko den zerrenda
+     * @param sc teklatuko datuak irakurtzeko Scanner objektua
+     */
+    public static void aktoreaEditatu(
+            ArrayList<Actor> actores,
+            Scanner sc) {
+
+        int kodea =
+                zenbakiOsoaIrakurri(
+                        sc,
+                        "Sartu editatu nahi duzun aktorearen kodea: ");
+
+        Actor editatzekoAktorea = null;
+
+        // Kodearen bidez aktorea bilatzen du
+        for (Actor actor : actores) {
+
+            if (actor.getCodigo() == kodea) {
+
+                editatzekoAktorea = actor;
+                break;
+            }
+        }
+
+        if (editatzekoAktorea == null) {
+
+            System.out.println(
+                    "Ez da kode hori duen aktorerik aurkitu.");
+
+            return;
+        }
+
+        System.out.println();
+        System.out.println("Editatuko den aktorea:");
+        System.out.println(editatzekoAktorea);
+
+        int aukera;
+
+        do {
+
+            System.out.println();
+            System.out.println("===== AKTOREA EDITATU =====");
+            System.out.println("1. Kodea aldatu");
+            System.out.println("2. Izena aldatu");
+            System.out.println("3. Jaiotze-data aldatu");
+            System.out.println("4. Jaioterria aldatu");
+            System.out.println("5. Nazionalitatea aldatu");
+            System.out.println("6. Bizirik egoera aldatu");
+            System.out.println("0. Amaitu");
+
+            aukera =
+                    zenbakiOsoaIrakurri(
+                            sc,
+                            "Aukeratu editatu nahi duzun eremua: ");
+
+            switch (aukera) {
+
+                case 1:
+
+                    int kodeBerria =
+                            zenbakiOsoaIrakurri(
+                                    sc,
+                                    "Sartu kode berria: ");
+
+                    boolean kodeErrepikatua = false;
+
+                    // Kode berria beste aktore batek duen egiaztatzen du
+                    for (Actor actor : actores) {
+
+                        if (actor != editatzekoAktorea
+                                && actor.getCodigo() == kodeBerria) {
+
+                            kodeErrepikatua = true;
+                            break;
+                        }
+                    }
+
+                    if (kodeErrepikatua) {
+
+                        System.out.println(
+                                "Errorea: kode hori duen aktore bat existitzen da.");
+
+                    } else {
+
+                        // Setter metodoaren bidez kodea aldatzen du
+                        editatzekoAktorea.setCodigo(kodeBerria);
+
+                        System.out.println(
+                                "Kodea behar bezala aldatu da.");
+                    }
+
+                    break;
+
+                case 2:
+
+                    System.out.print("Sartu izen berria: ");
+                    String izenBerria = sc.nextLine();
+
+                    // Setter metodoaren bidez izena aldatzen du
+                    editatzekoAktorea.setNombre(izenBerria);
+
+                    System.out.println(
+                            "Izena behar bezala aldatu da.");
+
+                    break;
+
+                case 3:
+
+                    LocalDate jaiotzeDataBerria =
+                            dataIrakurri(
+                                    sc,
+                                    "Sartu jaiotze-data berria (YYYY-MM-DD): ");
+
+                    if (editatzekoAktorea.getFechaMuerte() != null
+                            && jaiotzeDataBerria.isAfter(
+                                    editatzekoAktorea.getFechaMuerte())) {
+
+                        System.out.println(
+                                "Errorea: jaiotze-data ezin da heriotza-data baino geroagokoa izan.");
+
+                    } else {
+
+                        editatzekoAktorea.setFechaNacimiento(
+                                jaiotzeDataBerria);
+
+                        System.out.println(
+                                "Jaiotze-data behar bezala aldatu da.");
+                    }
+
+                    break;
+
+                case 4:
+
+                    System.out.print("Sartu jaioterri berria: ");
+                    String jaioterriBerria = sc.nextLine();
+
+                    editatzekoAktorea.setLugarNacimiento(
+                            jaioterriBerria);
+
+                    System.out.println(
+                            "Jaioterria behar bezala aldatu da.");
+
+                    break;
+
+                case 5:
+
+                    System.out.print(
+                            "Sartu nazionalitate berria: ");
+
+                    String nazionalitateBerria =
+                            sc.nextLine();
+
+                    editatzekoAktorea.setNacionalidad(
+                            nazionalitateBerria);
+
+                    System.out.println(
+                            "Nazionalitatea behar bezala aldatu da.");
+
+                    break;
+
+                case 6:
+
+                    boolean bizirik =
+                            baiEzIrakurri(
+                                    sc,
+                                    "Aktorea bizirik dago? (B/E): ");
+
+                    if (bizirik) {
+
+                        // Egoera eta heriotzaren datuak setter bidez aldatzen ditu
+                        editatzekoAktorea.setVivo(true);
+                        editatzekoAktorea.setFechaMuerte(null);
+                        editatzekoAktorea.setLugarMuerte("");
+
+                        System.out.println(
+                                "Aktorearen egoera behar bezala aldatu da.");
+
+                    } else {
+
+                        LocalDate heriotzaData =
+                                dataIrakurri(
+                                        sc,
+                                        "Sartu heriotza-data (YYYY-MM-DD): ");
+
+                        if (heriotzaData.isBefore(
+                                editatzekoAktorea.getFechaNacimiento())) {
+
+                            System.out.println(
+                                    "Errorea: heriotza-data ezin da jaiotze-data baino lehenagokoa izan.");
+
+                        } else {
+
+                            System.out.print(
+                                    "Sartu heriotza-lekua: ");
+
+                            String heriotzaLekua =
+                                    sc.nextLine();
+
+                            // Datuak baliozkoak direnean bakarrik aldatzen ditu
+                            editatzekoAktorea.setVivo(false);
+                            editatzekoAktorea.setFechaMuerte(
+                                    heriotzaData);
+                            editatzekoAktorea.setLugarMuerte(
+                                    heriotzaLekua);
+
+                            System.out.println(
+                                    "Aktorearen egoera behar bezala aldatu da.");
+                        }
+                    }
+
+                    break;
+
+                case 0:
+
+                    System.out.println();
+                    System.out.println(
+                            "Aktorearen azken informazioa:");
+
+                    System.out.println(editatzekoAktorea);
+
+                    break;
+
+                default:
+
+                    System.out.println(
+                            "Aukera ez da zuzena.");
+
+                    break;
+            }
+
+        } while (aukera != 0);
     }
 }
