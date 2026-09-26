@@ -1,3 +1,5 @@
+package eredua;
+
 import java.time.LocalDate;
 
 /**
@@ -29,7 +31,7 @@ public class Actor {
      * @param nacionalidad aktorearen nazionalitatea
      * @param fechaMuerte aktorearen heriotza-data; null izan daiteke
      * @param lugarMuerte aktorearen heriotza-lekua
-     * @param vivo aktorea bizirik dagoen ala ez adierazten duen balioa
+     * @param vivo aktorea bizirik dagoen ala ez
      */
     public Actor(
             int codigo,
@@ -52,7 +54,7 @@ public class Actor {
     }
 
     /**
-     * Aktorearen identifikazio-kodea itzultzen du.
+     * Aktorearen kodea itzultzen du.
      *
      * @return aktorearen kodea
      */
@@ -99,7 +101,7 @@ public class Actor {
     /**
      * Aktorearen heriotza-data itzultzen du.
      *
-     * @return aktorearen heriotza-data edo null bizirik badago
+     * @return heriotza-data edo null aktorea bizirik badago
      */
     public LocalDate getFechaMuerte() {
         return fechaMuerte;
@@ -117,16 +119,16 @@ public class Actor {
     /**
      * Aktorea bizirik dagoen ala ez adierazten du.
      *
-     * @return true aktorea bizirik badago; false bestela
+     * @return true bizirik badago; false bestela
      */
     public boolean isVivo() {
         return vivo;
     }
 
     /**
-     * Aktorearen identifikazio-kodea aldatzen du.
+     * Aktorearen kodea aldatzen du.
      *
-     * @param codigo aktorearen kode berria
+     * @param codigo kode berria
      */
     public void setCodigo(int codigo) {
         this.codigo = codigo;
@@ -135,7 +137,7 @@ public class Actor {
     /**
      * Aktorearen izena aldatzen du.
      *
-     * @param nombre aktorearen izen berria
+     * @param nombre izen berria
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -144,7 +146,7 @@ public class Actor {
     /**
      * Aktorearen jaiotze-data aldatzen du.
      *
-     * @param fechaNacimiento aktorearen jaiotze-data berria
+     * @param fechaNacimiento jaiotze-data berria
      */
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
@@ -153,7 +155,7 @@ public class Actor {
     /**
      * Aktorearen jaioterria aldatzen du.
      *
-     * @param lugarNacimiento aktorearen jaioterri berria
+     * @param lugarNacimiento jaioterri berria
      */
     public void setLugarNacimiento(String lugarNacimiento) {
         this.lugarNacimiento = lugarNacimiento;
@@ -162,7 +164,7 @@ public class Actor {
     /**
      * Aktorearen nazionalitatea aldatzen du.
      *
-     * @param nacionalidad aktorearen nazionalitate berria
+     * @param nacionalidad nazionalitate berria
      */
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
@@ -171,7 +173,7 @@ public class Actor {
     /**
      * Aktorearen heriotza-data aldatzen du.
      *
-     * @param fechaMuerte aktorearen heriotza-data berria
+     * @param fechaMuerte heriotza-data berria
      */
     public void setFechaMuerte(LocalDate fechaMuerte) {
         this.fechaMuerte = fechaMuerte;
@@ -180,16 +182,16 @@ public class Actor {
     /**
      * Aktorearen heriotza-lekua aldatzen du.
      *
-     * @param lugarMuerte aktorearen heriotza-leku berria
+     * @param lugarMuerte heriotza-leku berria
      */
     public void setLugarMuerte(String lugarMuerte) {
         this.lugarMuerte = lugarMuerte;
     }
 
     /**
-     * Aktorea bizirik dagoen ala ez adierazten duen balioa aldatzen du.
+     * Aktorearen bizirik egoera aldatzen du.
      *
-     * @param vivo aktorearen egoera berria
+     * @param vivo egoera berria
      */
     public void setVivo(boolean vivo) {
         this.vivo = vivo;
