@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -8,8 +9,8 @@ import java.util.Scanner;
  * kudeatzeko programa nagusia.
  *
  * Programak aktoreak zerrendatzeko, kodearen bidez bilatzeko,
- * bi daten artean bilatzeko, aktore berriak gehitzeko
- * eta aktoreak ezabatzeko aukera ematen du.
+ * bi daten artean bilatzeko, aktore berriak gehitzeko,
+ * aktoreak ezabatzeko eta izenaren arabera ordenatzeko aukera ematen du.
  */
 public class Main {
 
@@ -58,7 +59,7 @@ public class Main {
             System.out.println("3. Bi daten arteko aktoreak zerrendatu");
             System.out.println("4. Aktore berri bat gehitu");
             System.out.println("5. Aktore bat ezabatu");
-            System.out.println("6. Aktoreak ordenatu");
+            System.out.println("6. Aktoreak izenaren arabera ordenatu");
             System.out.println("0. Irten");
 
             aukera = zenbakiOsoaIrakurri("Aukeratu aukera bat: ");
@@ -86,7 +87,7 @@ public class Main {
                     break;
 
                 case 6:
-                    System.out.println("Oraindik ez dago eginda.");
+                    aktoreakOrdenatu(actores);
                     break;
 
                 case 0:
@@ -628,5 +629,31 @@ public class Main {
             System.out.println(
                     "Ezabatzea bertan behera utzi da.");
         }
+    }
+
+    /**
+     * Aktoreen zerrenda izenaren arabera ordenatzen du.
+     *
+     * Ordenazioa alfabetikoki eta maiuskulak edo minuskulak
+     * kontuan hartu gabe egiten da. Ondoren, zerrenda ordenatua
+     * taula formatuan erakusten du.
+     *
+     * @param actores ordenatuko den aktoreen zerrenda
+     */
+    static void aktoreakOrdenatu(ArrayList<Actor> actores) {
+
+        // Aktoreak izenaren arabera alfabetikoki ordenatzen ditu
+        actores.sort(
+                Comparator.comparing(
+                        Actor::getNombre,
+                        String.CASE_INSENSITIVE_ORDER
+                )
+        );
+
+        System.out.println();
+        System.out.println(
+                "Aktoreak izenaren arabera ordenatu dira:");
+
+        aktoreakZerrendatu(actores);
     }
 }
