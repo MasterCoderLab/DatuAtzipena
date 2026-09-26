@@ -3,11 +3,26 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Aktoreen datuak objektuetara orientatutako programazioaren bidez
+ * kudeatzeko programa nagusia.
+ *
+ * Programak aktoreak zerrendatzeko, kodearen bidez bilatzeko,
+ * bi daten artean bilatzeko eta aktore berriak gehitzeko aukera ematen du.
+ */
 public class Main {
 
     // Teklatutik datuak irakurtzeko Scanner objektua
     static Scanner sc = new Scanner(System.in);
 
+    /**
+     * Programaren abiapuntua.
+     *
+     * Aktoreen ArrayList-a sortzen du, hasierako datuak kargatzen ditu
+     * eta menu nagusia abiarazten du.
+     *
+     * @param args komando-lerroko argumentuak
+     */
     public static void main(String[] args) {
 
         // Aktore guztiak gordetzeko ArrayList-a
@@ -23,7 +38,12 @@ public class Main {
         sc.close();
     }
 
-    // Programaren menu nagusia erakusten du
+    /**
+     * Programaren menu nagusia erakusten du eta
+     * erabiltzaileak aukeratutako eragiketak kudeatzen ditu.
+     *
+     * @param actores kudeatuko diren aktoreen zerrenda
+     */
     static void menu(ArrayList<Actor> actores) {
 
         int aukera;
@@ -57,7 +77,7 @@ public class Main {
                     break;
 
                 case 4:
-                    System.out.println("Oraindik ez dago eginda.");
+                    aktoreaGehitu(actores);
                     break;
 
                 case 5:
@@ -80,7 +100,13 @@ public class Main {
         } while (aukera != 0);
     }
 
-    // Teklatutik zenbaki oso bat modu seguruan irakurtzen du
+    /**
+     * Teklatutik zenbaki oso bat modu seguruan irakurtzen du.
+     * Balio oker bat sartuz gero, erabiltzaileari berriro eskatzen dio.
+     *
+     * @param mezua erabiltzaileari erakutsiko zaion mezua
+     * @return erabiltzaileak sartutako zenbaki osoa
+     */
     static int zenbakiOsoaIrakurri(String mezua) {
 
         System.out.print(mezua);
@@ -104,7 +130,13 @@ public class Main {
         return zenbakia;
     }
 
-    // Teklatutik data bat modu seguruan irakurtzen du
+    /**
+     * Teklatutik data bat irakurtzen du YYYY-MM-DD formatuan.
+     * Formatu okerra sartuz gero, erabiltzaileari berriro eskatzen dio.
+     *
+     * @param mezua erabiltzaileari erakutsiko zaion mezua
+     * @return erabiltzaileak sartutako data
+     */
     static LocalDate dataIrakurri(String mezua) {
 
         while (true) {
@@ -125,7 +157,39 @@ public class Main {
         }
     }
 
-    // Hasierako aktoreen datuak ArrayList-ean kargatzen ditu
+    /**
+     * Teklatutik bai edo ez motako erantzuna irakurtzen du.
+     * B letra bai adierazteko erabiltzen da eta E letra ez adierazteko.
+     *
+     * @param mezua erabiltzaileari erakutsiko zaion mezua
+     * @return true erabiltzaileak B sartzen badu; false E sartzen badu
+     */
+    static boolean baiEzIrakurri(String mezua) {
+
+        while (true) {
+
+            System.out.print(mezua);
+
+            String erantzuna = sc.nextLine().trim();
+
+            if (erantzuna.equalsIgnoreCase("B")) {
+                return true;
+            }
+
+            if (erantzuna.equalsIgnoreCase("E")) {
+                return false;
+            }
+
+            System.out.println(
+                    "Errorea: B (bai) edo E (ez) sartu behar duzu.");
+        }
+    }
+
+    /**
+     * Hasierako aktoreen datuak zerrendan kargatzen ditu.
+     *
+     * @param actores aktoreak gordeko diren zerrenda
+     */
     static void aktoreakKargatu(ArrayList<Actor> actores) {
 
         actores.add(new Actor(
@@ -250,7 +314,9 @@ public class Main {
         ));
     }
 
-    // Taularen goiburua erakusten du
+    /**
+     * Aktoreen taularen goiburua pantailan erakusten du.
+     */
     static void taulaGoiburuaErakutsi() {
 
         System.out.printf(
@@ -268,7 +334,11 @@ public class Main {
         System.out.println("-".repeat(135));
     }
 
-    // Aktore baten datuak taulako lerro batean erakusten ditu
+    /**
+     * Aktore baten datuak taulako lerro batean erakusten ditu.
+     *
+     * @param actor erakutsiko den aktorea
+     */
     static void aktoreaLerroanErakutsi(Actor actor) {
 
         String jaioterria;
@@ -316,7 +386,11 @@ public class Main {
         );
     }
 
-    // Aktore guztiak taula batean erakusten ditu
+    /**
+     * Aktore guztiak taula formatuan pantailan erakusten ditu.
+     *
+     * @param actores erakutsiko diren aktoreen zerrenda
+     */
     static void aktoreakZerrendatu(ArrayList<Actor> actores) {
 
         taulaGoiburuaErakutsi();
@@ -326,7 +400,12 @@ public class Main {
         }
     }
 
-    // Aktore bat kodearen bidez bilatzen du
+    /**
+     * Kode baten bidez aktore bat bilatzen du eta,
+     * aurkituz gero, haren informazioa erakusten du.
+     *
+     * @param actores bilaketa egiteko erabiliko den aktoreen zerrenda
+     */
     static void aktoreaKodezBilatu(ArrayList<Actor> actores) {
 
         int bilatutakoKodea =
@@ -353,15 +432,24 @@ public class Main {
         }
     }
 
-    // Bi daten artean jaiotako aktoreak zerrendatzen ditu
+    /**
+     * Bi daten artean jaiotako aktoreak bilatzen ditu
+     * eta taula formatuan erakusten ditu.
+     *
+     * Hasierako eta amaierako datak bilaketan sartzen dira.
+     *
+     * @param actores bilaketa egiteko erabiliko den aktoreen zerrenda
+     */
     static void aktoreakDatenArteanZerrendatu(
             ArrayList<Actor> actores) {
 
         LocalDate hasierakoData =
-                dataIrakurri("Sartu hasierako data (YYYY-MM-DD): ");
+                dataIrakurri(
+                        "Sartu hasierako data (YYYY-MM-DD): ");
 
         LocalDate amaierakoData =
-                dataIrakurri("Sartu amaierako data (YYYY-MM-DD): ");
+                dataIrakurri(
+                        "Sartu amaierako data (YYYY-MM-DD): ");
 
         // Hasierako data amaierakoa baino geroagokoa den egiaztatzen du
         if (hasierakoData.isAfter(amaierakoData)) {
@@ -400,5 +488,87 @@ public class Main {
             System.out.println(
                     "Ez dago data horien artean jaiotako aktorerik.");
         }
+    }
+
+    /**
+     * Aktore berri bat sortu eta zerrendan gehitzen du.
+     *
+     * Aktorearen kodea bakarra dela egiaztatzen du.
+     * Aktorea bizirik badago, heriotzaren datuak ez dira eskatzen.
+     * Hilda badago, heriotza-data eta heriotza-lekua eskatzen dira.
+     *
+     * @param actores aktore berria gehituko den zerrenda
+     */
+    static void aktoreaGehitu(ArrayList<Actor> actores) {
+
+        int kodea =
+                zenbakiOsoaIrakurri("Sartu aktorearen kodea: ");
+
+        // Kode bera duen aktorerik dagoen egiaztatzen du
+        for (Actor actor : actores) {
+
+            if (actor.getCodigo() == kodea) {
+
+                System.out.println(
+                        "Errorea: kode hori duen aktore bat existitzen da.");
+
+                return;
+            }
+        }
+
+        System.out.print("Sartu aktorearen izena: ");
+        String izena = sc.nextLine();
+
+        LocalDate jaiotzeData =
+                dataIrakurri(
+                        "Sartu jaiotze-data (YYYY-MM-DD): ");
+
+        System.out.print("Sartu jaioterria: ");
+        String jaioterria = sc.nextLine();
+
+        System.out.print("Sartu nazionalitatea: ");
+        String nazionalitatea = sc.nextLine();
+
+        boolean bizirik =
+                baiEzIrakurri("Aktorea bizirik dago? (B/E): ");
+
+        LocalDate heriotzaData = null;
+        String heriotzaLekua = "";
+
+        if (!bizirik) {
+
+            heriotzaData =
+                    dataIrakurri(
+                            "Sartu heriotza-data (YYYY-MM-DD): ");
+
+            // Heriotza-data jaiotze-data baino lehenagokoa ezin da izan
+            if (heriotzaData.isBefore(jaiotzeData)) {
+
+                System.out.println(
+                        "Errorea: heriotza-data ezin da jaiotze-data baino lehenagokoa izan.");
+
+                return;
+            }
+
+            System.out.print("Sartu heriotza-lekua: ");
+            heriotzaLekua = sc.nextLine();
+        }
+
+        Actor aktoreBerria = new Actor(
+                kodea,
+                izena,
+                jaiotzeData,
+                jaioterria,
+                nazionalitatea,
+                heriotzaData,
+                heriotzaLekua,
+                bizirik
+        );
+
+        actores.add(aktoreBerria);
+
+        System.out.println();
+        System.out.println("Aktorea behar bezala gehitu da:");
+        System.out.println(aktoreBerria);
     }
 }
