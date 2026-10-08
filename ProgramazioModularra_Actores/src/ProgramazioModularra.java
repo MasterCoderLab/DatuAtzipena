@@ -1,22 +1,29 @@
+
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Aktoreen datuak kudeatzeko programa.
+ * Aktoreen datuak kudeatzeko programa modularra.
+ *
  * Programak aktoreak zerrendatu, kodearen bidez bilatu
- * eta hainbat kalkulu egiteko aukera ematen du.
+ * eta zenbakizko, data eta testu eremuetan oinarritutako
+ * kalkuluak egiteko aukera ematen du.
+ *
+ * Datuak taula paraleloetan gordetzen dira.
  */
 public class ProgramazioModularra {
 
-    // Aktoreen datuak gordetzeko taulak
+    // Menuaren eta datu-kutxen zabalera.
+    private static final int ZABALERA = 60;
 
-    // Aktoreen kodeak gordetzeko taula
-    static int[] codigo = {
+    // Aktoreen kodeak gordetzeko taula.
+    private static final int[] codigo = {
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
     };
 
-    // Aktoreen izenak gordetzeko taula
-    static String[] nombre = {
+    // Aktoreen izenak gordetzeko taula.
+    private static final String[] nombre = {
             "Kevin Costner",
             "Héctor Alterio",
             "Ricardo Darín",
@@ -30,8 +37,8 @@ public class ProgramazioModularra {
             "Ingrid Bergman"
     };
 
-    // Aktoreen jaiotze-datak gordetzeko taula
-    static LocalDate[] fechaNacimiento = {
+    // Aktoreen jaiotze-datak gordetzeko taula.
+    private static final LocalDate[] fechaNacimiento = {
             LocalDate.of(1955, 1, 18),
             LocalDate.of(1929, 10, 21),
             LocalDate.of(1957, 1, 16),
@@ -45,8 +52,8 @@ public class ProgramazioModularra {
             LocalDate.of(1915, 8, 29)
     };
 
-    // Aktoreen jaioterriak gordetzeko taula
-    static String[] lugarNacimiento = {
+    // Aktoreen jaioterriak gordetzeko taula.
+    private static final String[] lugarNacimiento = {
             "Lywood, California",
             "Buenos Aires",
             "Buenos Aires",
@@ -60,8 +67,8 @@ public class ProgramazioModularra {
             "Stockholm"
     };
 
-    // Aktoreen nazionalitateak gordetzeko taula
-    static String[] nacionalidad = {
+    // Aktoreen nazionalitateak gordetzeko taula.
+    private static final String[] nacionalidad = {
             "Estados Unidos",
             "Argentina",
             "Argentina",
@@ -75,8 +82,9 @@ public class ProgramazioModularra {
             "Suecia"
     };
 
-    // Aktoreen heriotza-datak gordetzeko taula
-    static LocalDate[] fechaMuerte = {
+    // Aktoreen heriotza-datak gordetzeko taula.
+    // null balioak data ez dagoela adierazten du.
+    private static final LocalDate[] fechaMuerte = {
             null,
             null,
             null,
@@ -90,8 +98,8 @@ public class ProgramazioModularra {
             LocalDate.of(1982, 8, 28)
     };
 
-    // Aktoreen heriotza-lekuak gordetzeko taula
-    static String[] lugarMuerte = {
+    // Aktoreen heriotza-lekuak gordetzeko taula.
+    private static final String[] lugarMuerte = {
             "",
             "",
             "",
@@ -105,8 +113,9 @@ public class ProgramazioModularra {
             "Londres"
     };
 
-    // Zenbakizko eremua: aktoreen jaiotze-urtea
-    static int[] anioNacimiento = {
+    // Zenbakizko eremua: aktoreen jaiotze-urtea.
+    // Batez bestekoa eta baliorik handiena kalkulatzeko.
+    private static final int[] anioNacimiento = {
             1955,
             1929,
             1957,
@@ -120,44 +129,47 @@ public class ProgramazioModularra {
             1915
     };
 
-    // Teklatutik datuak irakurtzeko Scanner objektua
-    static Scanner sc = new Scanner(System.in);
-
     /**
      * Programaren abiapuntua.
+     *
+     * Scanner bakarra sortu, menua abiarazi eta
+     * erabiltzailearen sarrera modu seguruan kudeatzen du.
      *
      * @param args komando-lerroko argumentuak
      */
     public static void main(String[] args) {
 
-        // Programaren menu nagusiari deitzen dio
-        menu();
+        try (Scanner teklatua = new Scanner(System.in)) {
 
-        // Scanner objektua ixten du programa amaitzean
-        sc.close();
+            menu(teklatua);
+
+        } catch (NoSuchElementException e) {
+
+            // Sarrera amaitzen bada, programa modu kontrolatuan amaitzen da.
+            System.out.println();
+            System.out.println("Teklatuaren sarrera amaitu da.");
+        }
     }
 
     /**
-     * Programaren menu nagusia erakutsi eta erabiltzailearen
-     * aukerak kudeatzen ditu.
+     * Programaren menu nagusia kudeatzen du.
+     *
+     * Erabiltzailearen aukera irakurri eta dagokion
+     * metodoari deitzen dio.
+     *
+     * @param teklatua erabiltzailearen sarrera irakurtzeko objektua
      */
-    static void menu() {
+    private static void menu(Scanner teklatua) {
 
         int aukera;
 
         do {
 
-            System.out.println();
-            System.out.println("===== AKTOREEN MENUA =====");
-            System.out.println("1. Aktore guztiak zerrendatu");
-            System.out.println("2. Aktore bat kodearen bidez bilatu");
-            System.out.println("3. Jaiotze-urteen batez-bestekoa kalkulatu");
-            System.out.println("4. Jaiotze-urte handiena duen aktorea erakutsi");
-            System.out.println("5. Jaiotze-data zaharrena duen aktorea erakutsi");
-            System.out.println("6. Izen luzeena duen aktorea erakutsi");
-            System.out.println("0. Irten");
+            erakutsiMenua();
 
-            aukera = zenbakiOsoaIrakurri("Aukeratu aukera bat: ");
+            aukera = zenbakiOsoaIrakurri(
+                    teklatua,
+                    "Aukeratu aukera bat (0-6): ");
 
             switch (aukera) {
 
@@ -166,7 +178,7 @@ public class ProgramazioModularra {
                     break;
 
                 case 2:
-                    aktoreaKodezBilatu();
+                    aktoreaKodezBilatu(teklatua);
                     break;
 
                 case 3:
@@ -186,11 +198,12 @@ public class ProgramazioModularra {
                     break;
 
                 case 0:
-                    System.out.println("Programa amaitu da.");
+                    erakutsiIzenburua("PROGRAMA AMAITUTA");
                     break;
 
                 default:
-                    System.out.println("Aukera ez da zuzena.");
+                    System.err.println(
+                            "Errorea: 0 eta 6 arteko aukera bat sartu.");
                     break;
             }
 
@@ -198,88 +211,220 @@ public class ProgramazioModularra {
     }
 
     /**
-     * Teklatutik zenbaki oso bat modu seguruan irakurtzen du.
+     * Menu nagusia modu antolatuan erakusten du.
      *
+     * Aukerak ataletan banatzen ditu eta
+     * kutxaren zabalera mantentzen du.
+     */
+    private static void erakutsiMenua() {
+
+        System.out.println();
+        System.out.println("╔" + "═".repeat(ZABALERA + 2) + "╗");
+
+        String titulua = "AKTOREEN KUDEAKETA";
+        int hutsuneak = (ZABALERA - titulua.length()) / 2;
+
+        kutxakoLerroa("", "║");
+        kutxakoLerroa(
+                " ".repeat(hutsuneak) + titulua, "║");
+        kutxakoLerroa("", "║");
+
+        System.out.println("╠" + "═".repeat(ZABALERA + 2) + "╣");
+
+        kutxakoLerroa("KONTSULTAK", "║");
+        kutxakoLerroa("", "║");
+
+        kutxakoLerroa(
+                "[1] Aktore guztiak zerrendatu", "║");
+        kutxakoLerroa(
+                "[2] Aktore bat kodearen bidez bilatu", "║");
+
+        kutxakoLerroa("", "║");
+        kutxakoLerroa("ESTATISTIKAK ETA KALKULUAK", "║");
+        kutxakoLerroa("", "║");
+
+        kutxakoLerroa(
+                "[3] Jaiotze-urteen batez-bestekoa kalkulatu", "║");
+        kutxakoLerroa(
+                "[4] Jaiotze-urte handiena duen aktorea erakutsi", "║");
+        kutxakoLerroa(
+                "[5] Jaiotze-data zaharrena duen aktorea erakutsi", "║");
+        kutxakoLerroa(
+                "[6] Izen luzeena duen aktorea erakutsi", "║");
+
+        kutxakoLerroa("", "║");
+
+        System.out.println("╠" + "═".repeat(ZABALERA + 2) + "╣");
+        kutxakoLerroa("[0] Irten", "║");
+        System.out.println("╚" + "═".repeat(ZABALERA + 2) + "╝");
+
+        System.out.println();
+    }
+
+    /**
+     * Testu bat kutxaren barruan lerrokatuta erakusten du.
+     *
+     * Behar diren hutsuneak automatikoki gehitzen ditu.
+     *
+     * @param testua erakutsi beharreko testua
+     * @param ertza kutxaren alboetako karakterea
+     */
+    private static void kutxakoLerroa(
+            String testua, String ertza) {
+
+        int hutsuneak = Math.max(0, ZABALERA - testua.length());
+
+        System.out.println(
+                ertza + " "
+                        + testua
+                        + " ".repeat(hutsuneak)
+                        + " " + ertza);
+    }
+
+    /**
+     * Emaitza baten izenburua erakusten du.
+     *
+     * @param titulua erakutsiko den izenburua
+     */
+    private static void erakutsiIzenburua(String titulua) {
+
+        System.out.println();
+        System.out.println("═".repeat(ZABALERA + 4));
+        System.out.println("  " + titulua);
+        System.out.println("═".repeat(ZABALERA + 4));
+        System.out.println();
+    }
+
+    /**
+     * Teklatutik zenbaki oso bat irakurtzen du.
+     *
+     * Sarrera baliogabea bada, salbuespena harrapatu
+     * eta zenbakia berriro eskatzen du.
+     *
+     * @param teklatua sarrera irakurtzeko Scanner objektua
      * @param mezua erabiltzaileari erakutsiko zaion mezua
      * @return erabiltzaileak sartutako zenbaki osoa
      */
-    static int zenbakiOsoaIrakurri(String mezua) {
+    private static int zenbakiOsoaIrakurri(
+            Scanner teklatua, String mezua) {
 
-        System.out.print(mezua);
+        int zenbakia = 0;
+        boolean baliozkoa = false;
 
-        // Erabiltzaileak zenbaki oso bat sartu duen egiaztatzen du
-        while (!sc.hasNextInt()) {
-
-            System.out.println("Errorea: zenbaki bat sartu behar duzu.");
-
-            // Scanner-aren bufferra garbitzen du
-            sc.nextLine();
+        do {
 
             System.out.print(mezua);
-        }
+            String sarrera = teklatua.nextLine().trim();
 
-        int zenbakia = sc.nextInt();
+            try {
 
-        // Scanner-aren bufferra garbitzen du
-        sc.nextLine();
+                zenbakia = Integer.parseInt(sarrera);
+                baliozkoa = true;
+
+            } catch (NumberFormatException e) {
+
+                System.err.println(
+                        "Errorea: zenbaki oso bat sartu behar duzu.");
+            }
+
+        } while (!baliozkoa);
 
         return zenbakia;
     }
 
     /**
-     * Adierazitako posizioan dagoen aktorearen datu guztiak
-     * pantailan erakusten ditu.
+     * Aktore baten datu-eremu bat modu lerrokatuan erakusten du.
+     *
+     * @param etiketa eremuaren izena
+     * @param balioa eremuaren balioa
+     */
+    private static void datuLerroa(
+            String etiketa, Object balioa) {
+
+        String testua = String.format(
+                "%-18s %s", etiketa + ":", balioa);
+
+        kutxakoLerroa(testua, "│");
+    }
+
+    /**
+     * Adierazitako posizioan dagoen aktorearen
+     * datu guztiak kutxa batean erakusten ditu.
+     *
+     * Metodo hau beste eragiketek berrerabiltzen dute.
      *
      * @param i aktorearen posizioa tauletan
      */
-    static void aktoreaErakutsi(int i) {
+    private static void aktoreaErakutsi(int i) {
 
-        System.out.println("------------------------------");
-        System.out.println("Kodea: " + codigo[i]);
-        System.out.println("Izena: " + nombre[i]);
-        System.out.println("Jaiotze-data: " + fechaNacimiento[i]);
+        System.out.println();
+        System.out.println("┌" + "─".repeat(ZABALERA + 2) + "┐");
+
+        kutxakoLerroa(
+                "AKTOREA: " + nombre[i], "│");
+
+        System.out.println("├" + "─".repeat(ZABALERA + 2) + "┤");
+
+        datuLerroa("Kodea", codigo[i]);
+        datuLerroa("Izena", nombre[i]);
+        datuLerroa("Jaiotze-data", fechaNacimiento[i]);
 
         if (lugarNacimiento[i].isEmpty()) {
-            System.out.println("Jaioterria: -");
+            datuLerroa("Jaioterria", "-");
         } else {
-            System.out.println("Jaioterria: " + lugarNacimiento[i]);
+            datuLerroa("Jaioterria", lugarNacimiento[i]);
         }
 
-        System.out.println("Nazionalitatea: " + nacionalidad[i]);
+        datuLerroa("Nazionalitatea", nacionalidad[i]);
 
         if (fechaMuerte[i] == null) {
-            System.out.println("Heriotza-data: -");
+            datuLerroa("Heriotza-data", "-");
         } else {
-            System.out.println("Heriotza-data: " + fechaMuerte[i]);
+            datuLerroa("Heriotza-data", fechaMuerte[i]);
         }
 
         if (lugarMuerte[i].isEmpty()) {
-            System.out.println("Heriotza-lekua: -");
+            datuLerroa("Heriotza-lekua", "-");
         } else {
-            System.out.println("Heriotza-lekua: " + lugarMuerte[i]);
+            datuLerroa("Heriotza-lekua", lugarMuerte[i]);
         }
 
-        System.out.println("Jaiotze-urtea: " + anioNacimiento[i]);
+        datuLerroa("Jaiotze-urtea", anioNacimiento[i]);
+
+        System.out.println("└" + "─".repeat(ZABALERA + 2) + "┘");
     }
 
     /**
-     * Aktore guztien datuak pantailan erakusten ditu.
+     * Aktore guztiak pantailan zerrendatzen ditu.
+     *
+     * Erregistro bakoitza datu-kutxa batean erakusten du.
      */
-    static void aktoreakZerrendatu() {
+    private static void aktoreakZerrendatu() {
+
+        erakutsiIzenburua("AKTORE GUZTIEN ZERRENDA");
 
         for (int i = 0; i < codigo.length; i++) {
+
             aktoreaErakutsi(i);
         }
+
+        System.out.println();
+        System.out.println(
+                "Guztira: " + codigo.length + " aktore.");
     }
 
     /**
-     * Erabiltzaileak adierazitako kodea duen aktorea bilatu
-     * eta haren datuak erakusten ditu.
+     * Erabiltzaileak sartutako kodearen bidez
+     * aktore bat bilatzen du.
+     *
+     * @param teklatua erabiltzailearen sarrera irakurtzeko objektua
      */
-    static void aktoreaKodezBilatu() {
+    private static void aktoreaKodezBilatu(Scanner teklatua) {
 
-        int bilatutakoKodea =
-                zenbakiOsoaIrakurri("Sartu aktorearen kodea: ");
+        erakutsiIzenburua("AKTOREA KODEAREN BIDEZ BILATU");
+
+        int bilatutakoKodea = zenbakiOsoaIrakurri(
+                teklatua, "Sartu aktorearen kodea: ");
 
         boolean aurkituta = false;
 
@@ -288,49 +433,62 @@ public class ProgramazioModularra {
             if (codigo[i] == bilatutakoKodea) {
 
                 aktoreaErakutsi(i);
-
                 aurkituta = true;
                 break;
             }
         }
 
         if (!aurkituta) {
+
+            System.out.println();
             System.out.println(
                     "Ez da kode hori duen aktorerik aurkitu.");
         }
     }
 
     /**
-     * Aktoreen jaiotze-urteen batez-bestekoa kalkulatu
-     * eta pantailan erakusten du.
+     * Jaiotze-urteen batez bestekoa kalkulatzen du.
+     *
+     * Urte guztiak batu eta aktore kopuruarekin
+     * zatitzen ditu.
      */
-    static void jaiotzeUrteenBatezBestekoa() {
+    private static void jaiotzeUrteenBatezBestekoa() {
+
+        erakutsiIzenburua("JAIOTZE-URTEEN BATEZ BESTEKOA");
 
         int batura = 0;
 
-        // Jaiotze-urte guztiak batzen ditu
+        // Jaiotze-urte guztiak batzen ditu.
         for (int i = 0; i < anioNacimiento.length; i++) {
-            batura = batura + anioNacimiento[i];
+
+            batura += anioNacimiento[i];
         }
 
-        // Batura aktore kopuruarekin zatitzen du
+        // Zatiketa erreala egiteko double motara bihurtzen da.
         double batezBestekoa =
                 (double) batura / anioNacimiento.length;
 
-        System.out.println(
-                "Jaiotze-urteen batez-bestekoa: "
-                        + batezBestekoa);
+        System.out.printf(
+                "  Aktore kopurua: %d%n", anioNacimiento.length);
+
+        System.out.printf(
+                "  Jaiotze-urteen batez bestekoa: %.2f%n",
+                batezBestekoa);
     }
 
     /**
-     * Jaiotze-urte handiena bilatu eta urte hori duten
-     * aktore guztiak erakusten ditu.
+     * Jaiotze-urte handiena bilatzen du.
+     *
+     * Urte hori duten aktore guztiak erakusten ditu,
+     * balio berdina duten erregistroak kontuan hartuz.
      */
-    static void jaiotzeUrteHandiena() {
+    private static void jaiotzeUrteHandiena() {
+
+        erakutsiIzenburua("JAIOTZE-URTE HANDIENA");
 
         int handiena = anioNacimiento[0];
 
-        // Jaiotze-urte handiena bilatzen du
+        // Urterik handiena bilatzen du.
         for (int i = 1; i < anioNacimiento.length; i++) {
 
             if (anioNacimiento[i] > handiena) {
@@ -341,7 +499,7 @@ public class ProgramazioModularra {
         System.out.println(
                 "Jaiotze-urte handiena: " + handiena);
 
-        // Urte handiena duten aktore guztiak erakusten ditu
+        // Urte hori duten aktore guztiak erakusten ditu.
         for (int i = 0; i < anioNacimiento.length; i++) {
 
             if (anioNacimiento[i] == handiena) {
@@ -351,15 +509,19 @@ public class ProgramazioModularra {
     }
 
     /**
-     * Jaiotze-data zaharrena bilatu eta data hori duen
-     * aktorea erakusten du.
+     * Jaiotze-data zaharrena duen aktorea bilatzen du.
+     *
+     * LocalDate objektuak isBefore() erabiliz
+     * alderatzen ditu.
      */
-    static void jaiotzeDataZaharrena() {
+    private static void jaiotzeDataZaharrena() {
+
+        erakutsiIzenburua("JAIOTZE-DATA ZAHARRENA");
 
         LocalDate dataZaharrena = fechaNacimiento[0];
         int posizioa = 0;
 
-        // Jaiotze-data guztiak alderatzen ditu
+        // Data zaharrena eta bere posizioa gordetzen ditu.
         for (int i = 1; i < fechaNacimiento.length; i++) {
 
             if (fechaNacimiento[i].isBefore(dataZaharrena)) {
@@ -376,17 +538,22 @@ public class ProgramazioModularra {
     }
 
     /**
-     * Karaktere gehien dituen izena bilatu eta luzera hori
-     * duten aktore guztiak erakusten ditu.
+     * Karaktere gehien dituen aktorearen izena bilatzen du.
+     *
+     * Luzera bereko izenak badaude, horiek guztiak
+     * erakusten ditu.
      */
-    static void izenLuzeena() {
+    private static void izenLuzeena() {
+
+        erakutsiIzenburua("IZEN LUZEENA DUEN AKTOREA");
 
         int luzeraHandiena = nombre[0].length();
 
-        // Izenen luzera handiena bilatzen du
+        // Izenaren gehieneko luzera bilatzen du.
         for (int i = 1; i < nombre.length; i++) {
 
             if (nombre[i].length() > luzeraHandiena) {
+
                 luzeraHandiena = nombre[i].length();
             }
         }
@@ -395,7 +562,7 @@ public class ProgramazioModularra {
                 "Izen luzeenaren karaktere kopurua: "
                         + luzeraHandiena);
 
-        // Luzera handiena duten aktore guztiak erakusten ditu
+        // Luzera handiena duten aktoreak erakusten ditu.
         for (int i = 0; i < nombre.length; i++) {
 
             if (nombre[i].length() == luzeraHandiena) {
